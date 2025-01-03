@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 plugins {
-    id 'nebula.plugin-plugin' version '16.2.0'
+    id 'com.netflix.nebula.plugin-plugin' version '21.2.2'
     id 'java-library'
 }
 
@@ -30,35 +28,46 @@ contacts {
 }
 
 dependencies {
-    implementation 'com.netflix.nebula:nebula-gradle-interop:2.0.0'
-    implementation 'com.netflix.nebula:nebula-publishing-plugin:18.3.0'
-    implementation 'com.netflix.nebula:gradle-contacts-plugin:6.0.0'
-    implementation 'com.netflix.nebula:gradle-dependency-lock-plugin:12.4.1'
-    implementation 'com.netflix.nebula:gradle-info-plugin:11.3.3'
+    implementation 'com.netflix.nebula:nebula-gradle-interop:latest.release'
+    implementation 'com.netflix.nebula:nebula-publishing-plugin:latest.release'
+    implementation 'com.netflix.nebula:gradle-contacts-plugin:latest.release'
+    implementation 'com.netflix.nebula:gradle-dependency-lock-plugin:latest.release'
+    implementation 'com.netflix.nebula:gradle-info-plugin:latest.release'
 }
 
 // We use hard coded versions here due to bundling compatibility, and we don't want to accidentally generate a lock file
 ext.set("dependencyLock.ignore", "true")
 
-pluginBundle {
+gradlePlugin {
     plugins {
         nebulaProject {
-            id = 'nebula.project'
+            id = 'com.netflix.nebula.project'
             displayName = 'Nebula Project'
             description = project.description
-            tags = ['nebula', 'project']
-        }
-        nebulaFacet {
-            id = 'nebula.facet'
-            displayName = 'Nebula Facet'
-            description = 'Reduce boilerplate for adding additional source sets'
-            tags = ['nebula', 'project']
+            implementationClass = 'nebula.plugin.responsible.NebulaResponsiblePlugin'
+            tags.set(['nebula', 'project'])
         }
         nebulaIntegTest {
-            id = 'nebula.integtest'
+            id = 'com.netflix.nebula.integtest'
             displayName = 'Nebula Integration Test'
             description = 'Adds source set and task for running integration tests separately from unit tests'
-            tags = ['nebula', 'project']
+            implementationClass = 'nebula.plugin.responsible.NebulaIntegTestPlugin'
+            tags.set(['nebula', 'project'])
+        }
+        nebulaFacet {
+            id = 'com.netflix.nebula.facet'
+            displayName = 'Nebula Facet'
+            description = 'Reduce boilerplate for adding additional source sets'
+            implementationClass = 'nebula.plugin.responsible.NebulaFacetPlugin'
+            tags.set(['nebula', 'project'])
+        }
+        nebulaIntegTestStandalone {
+            id = 'com.netflix.nebula.integtest-standalone'
+            displayName = 'Nebula Integration Test Standalone'
+            description = 'Adds source set and task for running integration tests separately from unit tests (standalone)'
+            implementationClass = 'nebula.plugin.responsible.NebulaIntegTestStandalonePlugin'
+            tags.set(['nebula', 'project'])
         }
     }
 }
+

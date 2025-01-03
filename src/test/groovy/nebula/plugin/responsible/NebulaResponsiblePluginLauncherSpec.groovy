@@ -1,15 +1,14 @@
 package nebula.plugin.responsible
 
-import nebula.test.IntegrationTestKitSpec
 import org.gradle.testkit.runner.TaskOutcome
 
-class NebulaResponsiblePluginLauncherSpec extends IntegrationTestKitSpec {
+class NebulaResponsiblePluginLauncherSpec extends BaseIntegrationTestKitSpec {
 
     def setup() {
         buildFile << """
             plugins {
                 id 'java'
-                id 'nebula.project'
+                id 'com.netflix.nebula.project'
             }
         """
     }
